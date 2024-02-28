@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -172,7 +171,6 @@ func (e *Eero) GetDataBreakdown(networkID string, startTime time.Time, endTime t
 	values.Add("timezone", tz)
 	encodedParams := values.Encode()
 
-	log.Println(endpoint + "/networks/" + networkID + "/data_usage/breakdown?" + encodedParams)
 	resp, err := e.authedRequest(http.MethodGet, endpoint+"/networks/"+networkID+"/data_usage/breakdown?"+encodedParams, nil)
 	if err != nil {
 		return Data{}, err
