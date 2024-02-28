@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/imdevinc/go-eero"
-	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,10 +18,6 @@ var networkID string = os.Getenv("EERO_NETWORK_ID")
 func getAuthedClient(t *testing.T) *eero.Eero {
 	t.Helper()
 	client := eero.NewEero()
-	err := godotenv.Load()
-	if !assert.NoError(t, err) {
-		t.FailNow()
-	}
 	client.UserToken = os.Getenv("EERO_USERTOKEN")
 	return client
 }
@@ -84,7 +80,7 @@ func TestGetDataBreakdown(t *testing.T) {
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
-	resp, err := client.GetDataBreakdown(networkID, time.Date(2024, 02, 25, 8, 00, 00, 00, loc), time.Date(2024, 3, 3, 7, 59, 00, 00, loc), "America/Los_Angeles")
+	resp, err := client.GetDataBreakdown(networkID, time.Date(2024, 2, 25, 8, 0, 0, 0, loc), time.Date(2024, 2, 25, 9, 0, 0, 0, loc), "America/Los_Angeles")
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}

@@ -166,8 +166,6 @@ func (e *Eero) GetNetworkDevices(networkID string) (DeviceResponse, error) {
 }
 
 func (e *Eero) GetDataBreakdown(networkID string, startTime time.Time, endTime time.Time, tz string) (Data, error) {
-	//https://api-user.e2ro.com/2.2/networks/3585026/data_usage/breakdown?start=2024-02-25T08%3A00%3A00.000Z&end=2024-03-03T07%3A59%3A59.999Z&timezone=America%2FLos_Angeles
-
 	values := url.Values{}
 	values.Add("start", startTime.Format("2006-01-02T15:05:05.000Z"))
 	values.Add("end", endTime.Format("2006-01-02T15:05:05.000Z"))
