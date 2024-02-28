@@ -1,9 +1,7 @@
 package eero_test
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"testing"
 	"time"
@@ -24,7 +22,7 @@ func getAuthedClient(t *testing.T) *eero.Eero {
 
 func TestLogin(t *testing.T) {
 	client := eero.NewEero()
-	err := client.Login(os.Getenv("EERO_USERTOKEN"))
+	err := client.Login(os.Getenv("EERO_IDENTITY"))
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
@@ -33,7 +31,7 @@ func TestLogin(t *testing.T) {
 
 func TestVerifyLogin(t *testing.T) {
 	client := getAuthedClient(t)
-	err := client.VerifyLogin(os.Getenv("EERO_USERTOKEN"))
+	err := client.VerifyLogin(os.Getenv("EERO_VALIDATION_CODE"))
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
@@ -46,8 +44,7 @@ func TestGetAccount(t *testing.T) {
 		t.FailNow()
 	}
 	expected := os.Getenv("EERO_EXPECTED_ACCOUNT_NAME")
-	if account.Name != expected {
-		t.Errorf("expected %s, but got %s", expected, account.Name)
+	if !assert.Equal(t, account.Name, expected) {
 		t.FailNow()
 	}
 }
@@ -84,5 +81,7 @@ func TestGetDataBreakdown(t *testing.T) {
 	if !assert.NoError(t, err) {
 		t.FailNow()
 	}
-	json.NewEncoder(log.Writer()).Encode(resp)
+	if !assert.GreaterOrEqual(t, len(resp.Devices), 1, "expected at least one device") {
+		t.FailNow()
+	}
 }
